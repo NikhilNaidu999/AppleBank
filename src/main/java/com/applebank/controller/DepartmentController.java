@@ -18,15 +18,18 @@ import com.applebank.dto.DepartmentDto;
 import com.applebank.model.Department;
 import com.applebank.service.DepartmentService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/department")
 public class DepartmentController {
 
+	//http://localhost:9090/swagger-ui/index.html
 	@Autowired
 	private DepartmentService departmentService;
 
 	@PostMapping("/reg")
-	public ResponseEntity<Department> registerDep(@RequestBody DepartmentDto departmentDto) {
+	public ResponseEntity<Department> registerDep(@RequestBody @Valid DepartmentDto departmentDto) {
 		return new ResponseEntity<Department>(departmentService.registerDepartment(departmentDto), HttpStatus.CREATED);
 	}
 	

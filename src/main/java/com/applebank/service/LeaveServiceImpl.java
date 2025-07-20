@@ -2,12 +2,14 @@ package com.applebank.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.applebank.dto.LeaveDto;
 import com.applebank.exception.EmployeeDoesNotExistException;
 import com.applebank.exception.LeaveNotFoundException;
+import com.applebank.model.Employee;
 import com.applebank.model.Leave;
 import com.applebank.repository.EmployeeRepository;
 import com.applebank.repository.LeaveRepository;
@@ -24,7 +26,7 @@ public class LeaveServiceImpl implements LeaveService {
 
 	@Override
 	public Leave registerLeave(LeaveDto leaveDto) {
-		if (employeeRepository.findAll().contains(leaveDto.getRequestedBy())) {
+		if (employeeRepository.findAll().stream().map(Employee::getFirstName).collect(Collectors.toList()).contains(leaveDto.getRequestedBy())) {
 			Leave leave = Leave.builder().fromDate(leaveDto.getFromDate()).toDate(leaveDto.getToDate())
 					.numberOfDays(getNoOfDays(leaveDto.getFromDate(), leaveDto.getToDate()))
 					.requestedBy(leaveDto.getRequestedBy()).requestedDate(leaveDto.getRequestedDate())
